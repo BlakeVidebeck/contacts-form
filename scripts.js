@@ -39,6 +39,7 @@ function contactPush(){
            newNumber.value = '' //has to be after the push otherwise it push blank values
     
     }
+    addSection.appendChild(addPara);
 }
 
 // search contacts
@@ -48,10 +49,11 @@ for(let contact of phonebook){
         searchPara.textContent = `${contact.name}: ${contact.number}`
         searchName.value = ''
         break;
-    } else [
+    } else {
     searchPara.textContent = 'contact not found'
-    ]
 }
+}
+searchSection.appendChild(searchPara);
 }
 
 //login function to see contacts
@@ -64,9 +66,9 @@ function loginFunction(){
     } else {
         loginPara.textContent = '';
         login.value = '';
-        createLogoutButton();
-        loginSection.removeChild(loginButton);
-        loginSection.appendChild(logoutButton);
+       loginButton.value = 'logout';
+       loginButton.removeEventListener('click', loginFunction) //removes loginFunction from loginButton
+       loginButton.addEventListener('click', logOut)           //ads logOut function to loginButton
         showContacts();
     }
 }
@@ -80,28 +82,17 @@ function showContacts(){
     }
 }
 
-//creates logout button and add logout function to it
-function createLogoutButton(){
-    logoutButton = document.createElement('button');
-    logoutButton.setAttribute('id', 'btn');
-    logoutButton.textContent = 'logout';
-    logoutButton.addEventListener('click', logOut);
-}
-
 //reset the logged in features when logged out button is pushed
 function logOut(){
         loginPara.textContent = 'You have successfully logged out';
         loginSection.appendChild(loginPara);
-        loginSection.removeChild(logoutButton);
-        loginSection.appendChild(loginButton);
+        loginButton.value = 'login'
+        loginButton.removeEventListener('click', logOut)
         while (append.firstChild) { //while append.firstChild is true removes all append.firstChild
             append.removeChild(append.firstChild);
         }
         loginButton.addEventListener('click', loginFunction);
 }
-
-addSection.appendChild(addPara);
-searchSection.appendChild(searchPara);
 
 addContact.addEventListener('click', contactPush);
 search.addEventListener('click', searchContact);
